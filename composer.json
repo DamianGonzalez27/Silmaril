@@ -1,11 +1,15 @@
 {
     "name": "damian/silmaril",
+    "description": "Framework de desarrollo PHP y React",
+    "type": "project",
+    "license": "MIT",
     "authors": [
         {
             "name": "DamianDev",
             "email": "damian27goa@gmail.com"
         }
     ],
+    "minimum-stability": "stable",
     "require": {
         "symfony/http-foundation": "^5.2",
         "filp/whoops": "^2.9",
