@@ -1,0 +1,19 @@
+{
+    "name": "damian/silmaril",
+    "authors": [
+        {
+            "name": "DamianDev",
+            "email": "damian27goa@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "^5.2",
+        "filp/whoops": "^2.9",
+        "league/plates": "^3.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/"
+        }
+    }
+}
