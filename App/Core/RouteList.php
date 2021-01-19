@@ -23,4 +23,9 @@ abstract class RouteList
     public $middlewares = [
         'auth' => \App\Middlewares\AuthMiddleware::class
     ];
+
+    /**
+     * Proveedor de request
+     */
+    public $requests = [];
 }

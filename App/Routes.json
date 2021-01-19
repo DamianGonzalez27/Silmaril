@@ -2,13 +2,9 @@
     "GET": {
         "/": {
             "controller": "PagesController@index"
-        },
-        "/agenda":{
-            "controller": "PagesController@agenda",
-            "middleware": "auth"
         }
     },
     "POST":{
-        "/loguin": "AuthController@loguin"
+        
     }
 }

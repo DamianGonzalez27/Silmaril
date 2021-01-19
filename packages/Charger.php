@@ -19,6 +19,10 @@ $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
+$configs = json_decode(@file_get_contents('../config.json'), true);
+
+define("CONFIGS", $configs);
+
 /**
  * Funcion general dump and die
  * 

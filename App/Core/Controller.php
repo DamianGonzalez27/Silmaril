@@ -7,24 +7,6 @@ class Controller
 {
 
     /**
-     * @param class Clase Request
-     */
-    private $request;
-
-    /**
-     * Metodo constructor
-     * 
-     * Al ser creado cualquier controlador nuevo este metodo recibe el objeto $request como parametro 
-     * y lo iguala a una variable publica para acceder a este objeto en cualquier controlador
-     * 
-     * @param class $request Clase Request
-     */
-    public function __construct($request)
-    {
-        $this->request = $request;
-    }
-
-    /**
      * Metodo para retornar views
      * 
      * Este metodo tiene la principal funcion de retornar un arreglo con la informacion de view y 
@@ -38,18 +20,8 @@ class Controller
     public function getView($view, $params = null)
     {
         return [
-            'view' => $view,
-            'params' => $params
+            'views' => $view,
+            'data' => $params
         ];
-    }
-
-    /**
-     * Metodo para retornar respuestas en formato JSON
-     * 
-     * Este metodo es usado para devolver parametros en formato JSON al front
-     */
-    public function getResponse($params)
-    {
-        return $params;
     }
 }

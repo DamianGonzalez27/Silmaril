@@ -1,7 +1,7 @@
 <?php namespace App\Core;
 
-use App\Core\Response;
 use App\Core\Client;
+use App\Core\Response;
 
 /**
  * Clase de manipulacion de rutas de acceso a informacion y views
@@ -130,6 +130,11 @@ class Routes
     {
         if(isset($response['errors']))
         {
+            if(isset($response['errors']['redirect']))
+            {
+                return $this->sendRedirect($response['errors']['redirect']);
+            }
+
             return $this->badResponse($method, $response['errors']['error_code'], $response['errors']['view']);
         }
         else
@@ -160,7 +165,9 @@ class Routes
         else
         {
             return $this->response->getHtmlResponse(
-                $this->templates->render($view, $data)
+                $this->templates->render($view, [
+                    'data' => $data
+                ])
             );
         }
     }
@@ -171,6 +178,14 @@ class Routes
     private function sendJsonResponse($data)
     {
         return $this->response->getJsonResponse($data);
+    }
+
+    /**
+     * Metodo de redireccion de peticiones
+     */
+    private function sendRedirect($redirect)
+    {
+        return $this->response->getRedirectResponse($redirect);
     }
 
     /**
@@ -188,13 +203,13 @@ class Routes
     {
         if($method == 'GET')
         {                
-            if(is_null($response['params']))
+            if(is_null($response['data']))
             {
-                return $this->sendHtmlResponse($response['view']);
+                return $this->sendHtmlResponse($response['views']);
             }
             else
             {
-                return $this->sendHtmlResponse($response['views'], $response['params']);
+                return $this->sendHtmlResponse($response['views'], $response['data']);
             }
         }
         else

@@ -31,7 +31,7 @@ class AuthMiddleware extends Middleware
         return [
             'errors' => [
                 'error_code' => 403,
-                'view' => 'home'
+                'redirect' => '/'
             ]
         ];
     }

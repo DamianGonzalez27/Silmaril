@@ -52,9 +52,18 @@ class Client extends RouteList
 
         if(isset($middleware['accept']))
         {
-            $controller = new $this->controllers[$arrayController[0]]($this->request);
+            $controller = new $this->controllers[$arrayController[0]]($this->controller);
 
-            return $controller->$method();
+            if(isset($this->controller['request']))
+            {
+                $request = new $this->requests[$this->controller['request']]($this->request);
+
+                return $controller->$method($request);
+            }
+            else
+            {
+                return $controller->$method();
+            }            
         }
         else
         {
@@ -74,16 +83,9 @@ class Client extends RouteList
     {
         if(isset($controller['middleware']))
         {
-            if(is_array($controller['middleware']))
-            {
+            $middleware = new $this->middlewares[$controller['middleware']]($this->request);
 
-            }
-            else
-            {
-                $middleware = new $this->middlewares[$controller['middleware']]($this->request);
-
-                return $middleware->run();
-            }
+            return $middleware->run();
         }
         else
         {
@@ -104,7 +106,53 @@ class Client extends RouteList
     public static function getDataControllers($method, $path)
     {
         $data = json_decode(@file_get_contents("../App/Routes.json"), true);
+        
+        $arrayPath = explode("/", $path);
 
+        if(count($arrayPath) > 2 && count($arrayPath) < 4)
+        {
+            if($arrayPath[2] === "")
+            {
+                return self::validatePaths($data, $method, "/".$arrayPath[1]);
+            }
+            else
+            {   
+                if(isset($data[$method]["/".$arrayPath[1]]['sub-routes']))
+                {
+                    if(in_array($arrayPath[2], $data[$method]["/".$arrayPath[1]]['sub-routes']))
+                    {
+                        return self::validatePaths($data, $method, "/".$arrayPath[1]);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        else if(count($arrayPath)>4)
+        {
+            return false;
+        }
+        else
+        {
+            return self::validatePaths($data, $method, $path);
+        }
+    }
+
+      /**
+     * Metodo de preparacion de una sola ruta
+     * 
+     * @param array $data Datos de configuracion
+     * @param string $method Metodo de la peticion
+     * @param string $path Path de la ruta de acceso
+     */
+    private static function validatePaths($data, $method, $path)
+    {
         if(isset($data[$method][$path]))
         {
             return $data[$method][$path];
